@@ -1,6 +1,7 @@
 package Shapes;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * @author Ivan
@@ -9,10 +10,15 @@ import java.awt.*;
  */
 public class Polyline extends Shape1D {
 
-	private Point[] points;
+	private ArrayList<Point> points;
 
 	public Polyline(){
 
+	}
+
+	public Polyline(ArrayList<Point> points, Color color) {
+		this.points = new ArrayList<>(points);
+		this.borderColor = color;
 	}
 
 	public void finalize() throws Throwable {
@@ -20,15 +26,18 @@ public class Polyline extends Shape1D {
 	}
 
 	public void draw(Graphics2D g){
-
+		int [] xPoints = points.stream().mapToInt(p -> p.getX()).toArray();
+		int [] yPoints = points.stream().mapToInt(p -> p.getY()).toArray();
+		g.setColor(borderColor);
+		g.drawPolyline(xPoints, yPoints, points.size());
 	}
 
-	public Point[] getpoints(){
+	public ArrayList<Point> getPoints(){
 		return points;
 	}
 
 	public Point locate(){
-		return null;
+		return points.get(0);
 	}
 
 	/**
@@ -36,14 +45,16 @@ public class Polyline extends Shape1D {
 	 * @param point
 	 */
 	public void move(Point point){
-
+		setOffset(point, points);
 	}
+
+
 
 	/**
 	 * 
 	 * @param newVal
 	 */
-	public void setpoints(Point[] newVal){
+	public void setPoints(ArrayList<Point> newVal){
 		points = newVal;
 	}
 

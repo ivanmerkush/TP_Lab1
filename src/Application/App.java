@@ -116,6 +116,7 @@ public class App {
         btnPolyline = new JMenuItem("Polyline");
         btnPolyline.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
+                btnFinishBuilding.setEnabled(true);
                 currentType = TypeOfShape.POLYLINE;
                 currentPoints.clear();
             }
@@ -208,9 +209,16 @@ public class App {
                         currentType = TypeOfShape.NONE;
                         btnFinishBuilding.setEnabled(false);
                         break;
-                    default: {
+                    case POLYLINE:
+                        Polyline polyline = new Polyline(currentPoints, borderColor);
+                        listOfShape.add(polyline);
+                        info.addElement("Polyline");
+                        panel.repaint();
+                        currentType = TypeOfShape.NONE;
+                        btnFinishBuilding.setEnabled(false);
                         break;
-                    }
+                    default:
+                        break;
                 }
             }
         });
@@ -279,7 +287,37 @@ public class App {
             @Override
             public void mousePressed(MouseEvent mouseEvent) {
                 switch(currentType) {
-                    case ELLIPSE: {
+                    case SEGMENT:
+                        Methods.drawPoint(panel, currentPoints, mouseEvent);
+                        if (currentPoints.size() == 2) {
+                            Segment segment = new Segment(currentPoints.get(0), currentPoints.get(1), borderColor);
+                            listOfShape.add(segment);
+                            info.addElement("Segment");
+                            panel.repaint();
+                            currentType = TypeOfShape.NONE;
+                        }
+                        break;
+                    case RAY:
+                        Methods.drawPoint(panel, currentPoints, mouseEvent);
+                        if (currentPoints.size() == 2) {
+                           Ray ray = new Ray(currentPoints.get(0), currentPoints.get(1), borderColor);
+                            listOfShape.add(ray);
+                            info.addElement("Ray");
+                            panel.repaint();
+                            currentType = TypeOfShape.NONE;
+                        }
+                        break;
+                    case LINE:
+                        Methods.drawPoint(panel, currentPoints, mouseEvent);
+                        if (currentPoints.size() == 2) {
+                            Line line = new Line(currentPoints.get(0), currentPoints.get(1), borderColor);
+                            listOfShape.add(line);
+                            info.addElement("Line");
+                            panel.repaint();
+                            currentType = TypeOfShape.NONE;
+                        }
+                        break;
+                    case ELLIPSE:
                         Methods.drawPoint(panel, currentPoints, mouseEvent);
                         if (currentPoints.size() == 3) {
                             Ellipse ellipse = new Ellipse(currentPoints.get(0), currentPoints.get(1), currentPoints.get(2));
@@ -291,8 +329,7 @@ public class App {
                             currentType = TypeOfShape.NONE;
                         }
                         break;
-                    }
-                    case CIRCLE: {
+                    case CIRCLE:
                         Methods.drawPoint(panel, currentPoints, mouseEvent);
                         if (currentPoints.size() == 2) {
                             Circle circle = new Circle(currentPoints.get(0), currentPoints.get(1));
@@ -304,12 +341,11 @@ public class App {
                             currentType = TypeOfShape.NONE;
                         }
                         break;
-                    }
-                    case POLYGON: {
+                    case POLYGON:
+                    case POLYLINE:
                         Methods.drawPoint(panel, currentPoints, mouseEvent);
                         break;
-                    }
-                    case REGULARPOLYGON: {
+                    case REGULARPOLYGON:
                         Methods.drawPoint(panel, currentPoints, mouseEvent);
                         if(currentPoints.size() == 2) {
                             RegularPolygon regularPolygon = new RegularPolygon(currentPoints.get(0), currentPoints.get(1), numberOfSides);
@@ -322,9 +358,7 @@ public class App {
                             numberOfSides = 0;
                         }
                         break;
-
-                    }
-                    case TRIANGLE: {
+                    case TRIANGLE:
                         Methods.drawPoint(panel, currentPoints, mouseEvent);
                         if(currentPoints.size() == 3) {
                             Triangle triangle = new Triangle(currentPoints.get(0), currentPoints.get(1), currentPoints.get(2));
@@ -336,8 +370,7 @@ public class App {
                             currentType = TypeOfShape.NONE;
                         }
                         break;
-                    }
-                    case PARALLELOGRAM: {
+                    case PARALLELOGRAM:
                         Methods.drawPoint(panel, currentPoints, mouseEvent);
                         if(currentPoints.size() == 3) {
                             Parallelogram parallelogram = new Parallelogram(currentPoints.get(0), currentPoints.get(1), currentPoints.get(2));
@@ -349,8 +382,7 @@ public class App {
                             currentType = TypeOfShape.NONE;
                         }
                         break;
-                    }
-                    case RECTANGLE: {
+                    case RECTANGLE:
                         Methods.drawPoint(panel, currentPoints, mouseEvent);
                         if(currentPoints.size() == 2) {
                             Rectangle rectangle = new Rectangle(currentPoints.get(0), currentPoints.get(1));
@@ -362,7 +394,6 @@ public class App {
                             currentType = TypeOfShape.NONE;
                         }
                         break;
-                    }
                     default:
                         break;
                 }

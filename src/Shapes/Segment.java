@@ -9,22 +9,24 @@ import java.awt.*;
  */
 public class Segment extends Shape1D {
 
-	private Point secondPoint;
+	protected Point secondPoint;
 
 	public Segment(){
 
 	}
 
+	public Segment(Point firstPoint, Point secondPoint, Color color) {
+		super(firstPoint,color);
+		this.secondPoint = secondPoint;
+	}
+
 	public void draw(Graphics2D g){
-
+		g.setColor(this.borderColor);
+		g.drawLine(center.getX(), center.getY(), secondPoint.getX(), secondPoint.getY());
 	}
 
-	public Point getsecondPoint(){
+	public Point getSecondPoint(){
 		return secondPoint;
-	}
-
-	public Point locate(){
-		return null;
 	}
 
 	/**
@@ -32,7 +34,11 @@ public class Segment extends Shape1D {
 	 * @param point
 	 */
 	public void move(Point point){
-
+		int offsetX = point.getX() - this.center.getX();
+		int offsetY = point.getY() - this.center.getY();
+		this.center = point;
+		this.secondPoint.setX(this.secondPoint.getX() + offsetX);
+		this.secondPoint.setY(this.secondPoint.getY() + offsetY);
 	}
 
 	/**

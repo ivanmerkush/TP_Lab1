@@ -43,12 +43,7 @@ public class Polygon extends Shape2D {
 	 * @param point
 	 */
 	public void move(Point point){
-		int offsetX = point.getX() - points.get(0).getX();//points.get(0).getX() > point.getX() ? points.get(0).getX() - point.getX() : point.getX() - points.get(0).getX();
-		int offsetY = point.getY() - points.get(0).getY();
-		for(Point i: points) {
-			i.setX(i.getX() + offsetX);
-			i.setY(i.getY() + offsetY);
-		}
+		setOffset(point, points);
 	}
 
 	/**

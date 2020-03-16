@@ -13,10 +13,16 @@ public abstract class Shape1D extends Shape {
 
 	}
 
+	public Shape1D(Point center, Color color) {
+		this.center = center;
+		this.borderColor = color;
+	}
 
 	public abstract void draw(Graphics2D g);
 
-	public abstract Point locate();
+	public Point locate() {
+		return this.center;
+	}
 
 	/**
 	 * 
