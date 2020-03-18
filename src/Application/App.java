@@ -8,8 +8,6 @@ import Shapes.Shape;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.EventListener;
-import java.util.Vector;
 
 import javax.swing.*;
 
@@ -18,28 +16,12 @@ public class App {
     private TypeOfShape currentType = TypeOfShape.NONE;
     private Panel panel;
     private JFrame frame;
-    private JMenuBar menuBar;
-    private JMenu mnShapes;
-    private JMenuItem btnSegment;
-    private JMenuItem btnRay;
-    private JMenuItem btnLine;
-    private JMenuItem btnPolyline;
-    private JMenuItem btnTriangle;
-    private JMenuItem btnRectangle;
-    private JMenuItem btnParallelogram;
-    private JMenuItem btnRegularPolygon;
-    private JMenuItem btnIsoscelesTriangle;
-    private JMenuItem btnEllipse;
-    private JMenuItem btnCircle;
-    private JMenuItem btnPolygon;
     private JMenuItem btnFinishBuilding;
-    private JMenu mnColor;
-    private JMenuItem border;
-    private JMenuItem filling;
     private JButton btnLocate;
     private JButton btnMove;
     private ArrayList<Shapes.Point> currentPoints;
     private int numberOfSides;
+    private int height;
     static ArrayList<Shape> listOfShape;
     private JColorChooser chooser;
     private Color borderColor = Color.black;
@@ -80,13 +62,13 @@ public class App {
 
         panel = new Panel(new BorderLayout());
 
-        menuBar = new JMenuBar();
+        JMenuBar menuBar = new JMenuBar();
         frame.setJMenuBar(menuBar);
 
-        mnShapes = new JMenu("Shapes");
+        JMenu mnShapes = new JMenu("Shapes");
         menuBar.add(mnShapes);
 
-        btnSegment = new JMenuItem("Segment");
+        JMenuItem btnSegment = new JMenuItem("Segment");
         btnSegment.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
                 currentType = TypeOfShape.SEGMENT;
@@ -95,7 +77,7 @@ public class App {
         });
         mnShapes.add(btnSegment);
 
-        btnRay = new JMenuItem("Ray");
+        JMenuItem btnRay = new JMenuItem("Ray");
         btnRay.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
                 currentType = TypeOfShape.RAY;
@@ -104,7 +86,7 @@ public class App {
         });
         mnShapes.add(btnRay);
 
-        btnLine = new JMenuItem("Line");
+        JMenuItem btnLine = new JMenuItem("Line");
         btnLine.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
                 currentType = TypeOfShape.LINE;
@@ -113,7 +95,7 @@ public class App {
         });
         mnShapes.add(btnLine);
 
-        btnPolyline = new JMenuItem("Polyline");
+        JMenuItem btnPolyline = new JMenuItem("Polyline");
         btnPolyline.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
                 btnFinishBuilding.setEnabled(true);
@@ -123,7 +105,7 @@ public class App {
         });
         mnShapes.add(btnPolyline);
 
-        btnTriangle = new JMenuItem("Triangle");
+        JMenuItem btnTriangle = new JMenuItem("Triangle");
         btnTriangle.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
                 currentType = TypeOfShape.TRIANGLE;
@@ -132,7 +114,7 @@ public class App {
         });
         mnShapes.add(btnTriangle);
 
-        btnRectangle = new JMenuItem("Rectangle");
+        JMenuItem btnRectangle = new JMenuItem("Rectangle");
         btnRectangle.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
                 currentType = TypeOfShape.RECTANGLE;
@@ -141,7 +123,7 @@ public class App {
         });
         mnShapes.add(btnRectangle);
 
-        btnParallelogram = new JMenuItem("Parallelogram");
+        JMenuItem btnParallelogram = new JMenuItem("Parallelogram");
         btnParallelogram.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
                 currentType = TypeOfShape.PARALLELOGRAM;
@@ -150,20 +132,27 @@ public class App {
         });
         mnShapes.add(btnParallelogram);
 
-        btnRegularPolygon = new JMenuItem("Regular Polygon");
+        JMenuItem btnRegularPolygon = new JMenuItem("Regular Polygon");
         btnRegularPolygon.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
-                numberOfSides = Methods.enterNumberOfSides();
+                numberOfSides = Methods.setRequiredNumber();
                 currentType = TypeOfShape.REGULARPOLYGON;
                 currentPoints.clear();
             }
         });
         mnShapes.add(btnRegularPolygon);
 
-        btnIsoscelesTriangle = new JMenuItem("Isosceles Triangle");
+        JMenuItem btnIsoscelesTriangle = new JMenuItem("Isosceles Triangle");
+        btnIsoscelesTriangle.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                height = Methods.setRequiredNumber();
+                currentType = TypeOfShape.ISOSCELESTRIANGLE;
+                currentPoints.clear();
+            }
+        });
         mnShapes.add(btnIsoscelesTriangle);
 
-        btnEllipse = new JMenuItem("Ellipse");
+        JMenuItem btnEllipse = new JMenuItem("Ellipse");
         btnEllipse.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
                 currentType = TypeOfShape.ELLIPSE;
@@ -172,7 +161,7 @@ public class App {
         });
         mnShapes.add(btnEllipse);
 
-        btnCircle = new JMenuItem("Circle");
+        JMenuItem btnCircle = new JMenuItem("Circle");
         btnCircle.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
                 currentType = TypeOfShape.CIRCLE;
@@ -181,7 +170,7 @@ public class App {
         });
         mnShapes.add(btnCircle);
 
-        btnPolygon = new JMenuItem("Polygon");
+        JMenuItem btnPolygon = new JMenuItem("Polygon");
         btnPolygon.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
                 btnFinishBuilding.setEnabled(true);
@@ -224,13 +213,13 @@ public class App {
         });
         mnShapes.add(btnFinishBuilding);
 
-        mnColor = new JMenu("Color");
+        JMenu mnColor = new JMenu("Color");
         menuBar.add(mnColor);
 
-        border = new JMenuItem("Border");
+        JMenuItem border = new JMenuItem("Border");
         mnColor.add(border);
 
-        filling = new JMenuItem("Filling");
+        JMenuItem filling = new JMenuItem("Filling");
         mnColor.add(filling);
 
         chooser = new JColorChooser();
@@ -366,6 +355,18 @@ public class App {
                             triangle.setfillingColor(fillingColor);
                             listOfShape.add(triangle);
                             info.addElement("Triangle");
+                            panel.repaint();
+                            currentType = TypeOfShape.NONE;
+                        }
+                        break;
+                    case ISOSCELESTRIANGLE:
+                        Methods.drawPoint(panel, currentPoints, mouseEvent);
+                        if(currentPoints.size() == 2) {
+                            IsoscelesTriangle isoscelesTriangle = new IsoscelesTriangle(currentPoints.get(0),currentPoints.get(1), height);
+                            isoscelesTriangle.setBorderColor(borderColor);
+                            isoscelesTriangle.setfillingColor(fillingColor);
+                            listOfShape.add(isoscelesTriangle);
+                            info.addElement("Isosceles Triangle");
                             panel.repaint();
                             currentType = TypeOfShape.NONE;
                         }

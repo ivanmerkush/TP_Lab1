@@ -17,7 +17,7 @@ public class RegularPolygon extends Polygon {
 		double angle = 360.0 / numberOfSides;
 		double z = Math.toDegrees(Math.asin(vertical / radius));
 		for (int i = 0; i < numberOfSides; i++) { //цикл для создания списка точек
-			double a = Math.cos( z/180*Math.PI);;
+			double a = Math.cos( z/180*Math.PI);
 			double b = Math.sin( z/180*Math.PI);
 			points.add(new Point(center.getX() < borderPoint.getX() ? center.getX() + (int) (a * radius) : center.getX() - (int) (a * radius),
 					center.getY() < borderPoint.getY() ? center.getY() + (int) (b * radius) : center.getY() - (int) (b * radius)));

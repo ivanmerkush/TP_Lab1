@@ -14,9 +14,9 @@ public class Methods {
         currentPoints.add(new Shapes.Point(mouseEvent.getX(), mouseEvent.getY()));
     }
 
-    public static int enterNumberOfSides() {
+    public static int setRequiredNumber() {
         JTextField textField = new JTextField();
-        final JComponent[] inputs = new JComponent[] { new JLabel("Number of sides"), textField };
+        final JComponent[] inputs = new JComponent[] { new JLabel(""), textField };
         int result = JOptionPane.showConfirmDialog(null, inputs, "Enter please", JOptionPane.DEFAULT_OPTION);
         if (result == JOptionPane.OK_OPTION) {
             return Integer.parseInt(textField.getText());
@@ -25,6 +25,7 @@ public class Methods {
         }
         return Integer.parseInt(textField.getText());
     }
+
 
     public static Point move() {
         JTextField textFieldX = new JTextField();
