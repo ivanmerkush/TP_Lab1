@@ -1,5 +1,6 @@
 package Shapes;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -13,7 +14,7 @@ public class IsoscelesTriangle extends Polygon {
 
 	}
 
-	public IsoscelesTriangle(Point firstPoint, Point secondPoint, int height) {
+	public IsoscelesTriangle(Point firstPoint, Point secondPoint, int height, Color borderColor, Color fillingColor) {
 	    int bigX, smallX, bigY, smallY;
 	    if(firstPoint.getX() > secondPoint.getX()) {
 	        bigX = firstPoint.getX();
@@ -42,6 +43,8 @@ public class IsoscelesTriangle extends Polygon {
         points.add(firstPoint);
         points.add(secondPoint);
         points.add(vertex);
+        this.borderColor = borderColor;
+        this.fillingColor = fillingColor;
 	}
 	public void finalize() throws Throwable {
 		super.finalize();

@@ -29,6 +29,7 @@ public class App {
     private int selected;
     private DefaultListModel<String> info = new DefaultListModel<String>();
     private JList<String> list   = new JList<String>(info);
+    private Shape currentShape;
     /**
      * Launch the application.
      */
@@ -67,117 +68,65 @@ public class App {
 
         JMenu mnShapes = new JMenu("Shapes");
         menuBar.add(mnShapes);
-
+        ActionListener shapeButtonListener = actionEvent -> {
+            currentType = TypeOfShape.valueOf(actionEvent.getActionCommand().toUpperCase());
+        };
         JMenuItem btnSegment = new JMenuItem("Segment");
-        btnSegment.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent actionEvent) {
-                currentType = TypeOfShape.SEGMENT;
-                currentPoints.clear();
-            }
-        });
+        btnSegment.addActionListener(shapeButtonListener);
         mnShapes.add(btnSegment);
 
         JMenuItem btnRay = new JMenuItem("Ray");
-        btnRay.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent actionEvent) {
-                currentType = TypeOfShape.RAY;
-                currentPoints.clear();
-            }
-        });
+        btnRay.addActionListener(shapeButtonListener);
         mnShapes.add(btnRay);
-
         JMenuItem btnLine = new JMenuItem("Line");
-        btnLine.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent actionEvent) {
-                currentType = TypeOfShape.LINE;
-                currentPoints.clear();
-            }
-        });
+        btnLine.addActionListener(shapeButtonListener);
         mnShapes.add(btnLine);
 
         JMenuItem btnPolyline = new JMenuItem("Polyline");
-        btnPolyline.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent actionEvent) {
-                btnFinishBuilding.setEnabled(true);
-                currentType = TypeOfShape.POLYLINE;
-                currentPoints.clear();
-            }
+        btnPolyline.addActionListener(shapeButtonListener);
+        btnPolyline.addActionListener(actionEvent -> {
+            btnFinishBuilding.setEnabled(true);
         });
         mnShapes.add(btnPolyline);
-
         JMenuItem btnTriangle = new JMenuItem("Triangle");
-        btnTriangle.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent actionEvent) {
-                currentType = TypeOfShape.TRIANGLE;
-                currentPoints.clear();
-            }
-        });
+        btnTriangle.addActionListener(shapeButtonListener);
         mnShapes.add(btnTriangle);
 
         JMenuItem btnRectangle = new JMenuItem("Rectangle");
-        btnRectangle.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent actionEvent) {
-                currentType = TypeOfShape.RECTANGLE;
-                currentPoints.clear();
-            }
-        });
+        btnRectangle.addActionListener(shapeButtonListener);
         mnShapes.add(btnRectangle);
 
         JMenuItem btnParallelogram = new JMenuItem("Parallelogram");
-        btnParallelogram.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent actionEvent) {
-                currentType = TypeOfShape.PARALLELOGRAM;
-                currentPoints.clear();
-            }
-        });
+        btnParallelogram.addActionListener(shapeButtonListener);
         mnShapes.add(btnParallelogram);
 
-        JMenuItem btnRegularPolygon = new JMenuItem("Regular Polygon");
-        btnRegularPolygon.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent actionEvent) {
-                numberOfSides = Methods.setRequiredNumber();
-                currentType = TypeOfShape.REGULARPOLYGON;
-                currentPoints.clear();
-            }
+        JMenuItem btnRegularPolygon = new JMenuItem("RegularPolygon");
+        btnRegularPolygon.addActionListener(shapeButtonListener);
+        btnRegularPolygon.addActionListener(actionEvent -> {
+            numberOfSides = Methods.setRequiredNumber();
         });
         mnShapes.add(btnRegularPolygon);
 
-        JMenuItem btnIsoscelesTriangle = new JMenuItem("Isosceles Triangle");
-        btnIsoscelesTriangle.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent actionEvent) {
-                height = Methods.setRequiredNumber();
-                currentType = TypeOfShape.ISOSCELESTRIANGLE;
-                currentPoints.clear();
-            }
+        JMenuItem btnIsoscelesTriangle = new JMenuItem("IsoscelesTriangle");
+        btnIsoscelesTriangle.addActionListener(actionEvent -> {
+            height = Methods.setRequiredNumber();
         });
+        btnIsoscelesTriangle.addActionListener(shapeButtonListener);
         mnShapes.add(btnIsoscelesTriangle);
 
         JMenuItem btnEllipse = new JMenuItem("Ellipse");
-        btnEllipse.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent actionEvent) {
-                currentType = TypeOfShape.ELLIPSE;
-                currentPoints.clear();
-            }
-        });
+        btnEllipse.addActionListener(shapeButtonListener);
         mnShapes.add(btnEllipse);
 
         JMenuItem btnCircle = new JMenuItem("Circle");
-        btnCircle.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent actionEvent) {
-                currentType = TypeOfShape.CIRCLE;
-                currentPoints.clear();
-            }
-        });
+        btnCircle.addActionListener(shapeButtonListener);
         mnShapes.add(btnCircle);
 
         JMenuItem btnPolygon = new JMenuItem("Polygon");
-        btnPolygon.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent actionEvent) {
-                btnFinishBuilding.setEnabled(true);
-                currentType = TypeOfShape.POLYGON;
-                currentPoints.clear();
-            }
+        btnPolygon.addActionListener(actionEvent -> {
+            btnFinishBuilding.setEnabled(true);
         });
+        btnPolygon.addActionListener(shapeButtonListener);
         mnShapes.add(btnPolygon);
 
         JSeparator separator = new JSeparator();
@@ -185,31 +134,17 @@ public class App {
 
         btnFinishBuilding = new JMenuItem("Finish building");
         btnFinishBuilding.setEnabled(false);
-        btnFinishBuilding.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent actionEvent) {
-                switch(currentType) {
-                    case POLYGON:
-                        Polygon polygon = new Polygon(currentPoints);
-                        polygon.setBorderColor(borderColor);
-                        polygon.setfillingColor(fillingColor);
-                        listOfShape.add(polygon);
-                        info.addElement("Polygon");
-                        panel.repaint();
-                        currentType = TypeOfShape.NONE;
-                        btnFinishBuilding.setEnabled(false);
-                        break;
-                    case POLYLINE:
-                        Polyline polyline = new Polyline(currentPoints, borderColor);
-                        listOfShape.add(polyline);
-                        info.addElement("Polyline");
-                        panel.repaint();
-                        currentType = TypeOfShape.NONE;
-                        btnFinishBuilding.setEnabled(false);
-                        break;
-                    default:
-                        break;
-                }
+        btnFinishBuilding.addActionListener(actionEvent -> {
+            switch(currentType) {
+                case POLYGON:
+                    currentShape = new Polygon(currentPoints, borderColor, fillingColor);
+                    break;
+                case POLYLINE:
+                    currentShape = new Polyline(currentPoints, borderColor);
+                    break;
             }
+            btnFinishBuilding.setEnabled(false);
+            addShape();
         });
         mnShapes.add(btnFinishBuilding);
 
@@ -242,24 +177,16 @@ public class App {
 
         btnLocate = new JButton("Locate");
         btnLocate.setEnabled(false);
-        btnLocate.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                Methods.locateShape(listOfShape.get(selected));
-            }
-        });
+        btnLocate.addActionListener(actionEvent -> Methods.locateShape(listOfShape.get(selected)));
         menuBar.add(btnLocate);
 
 
         btnMove = new JButton("Move");
         btnMove.setEnabled(false);
-        btnMove.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                Point newLocation = Methods.move();
-                listOfShape.get(selected).move(newLocation);
-                panel.repaint();
-            }
+        btnMove.addActionListener(actionEvent -> {
+            Point newLocation = Methods.move();
+            listOfShape.get(selected).move(newLocation);
+            panel.repaint();
         });
         menuBar.add(btnMove);
 
@@ -275,130 +202,56 @@ public class App {
 
             @Override
             public void mousePressed(MouseEvent mouseEvent) {
-                switch(currentType) {
-                    case SEGMENT:
-                        Methods.drawPoint(panel, currentPoints, mouseEvent);
-                        if (currentPoints.size() == 2) {
-                            Segment segment = new Segment(currentPoints.get(0), currentPoints.get(1), borderColor);
-                            listOfShape.add(segment);
-                            info.addElement("Segment");
-                            panel.repaint();
-                            currentType = TypeOfShape.NONE;
+                Methods.drawPoint(panel, currentPoints, mouseEvent);
+                if(currentType != TypeOfShape.POLYLINE && currentType != TypeOfShape.POLYGON) {
+
+                    if (currentPoints.size() == 2 && currentType != TypeOfShape.ELLIPSE && currentType != TypeOfShape.TRIANGLE && currentType != TypeOfShape.PARALLELOGRAM) {
+                        switch (currentType) {
+                            case SEGMENT:
+                                currentShape = new Segment(currentPoints.get(0), currentPoints.get(1), borderColor);
+                                break;
+                            case RAY:
+                                currentShape = new Ray(currentPoints.get(0), currentPoints.get(1), borderColor);
+                                break;
+                            case LINE:
+                                currentShape = new Line(currentPoints.get(0), currentPoints.get(1), borderColor);
+                                break;
+                            case CIRCLE:
+                                currentShape = new Circle(currentPoints.get(0), currentPoints.get(1), borderColor, fillingColor);
+                                break;
+                            case RECTANGLE:
+                                currentShape = new Rectangle(currentPoints.get(0), currentPoints.get(1), borderColor, fillingColor);
+                                break;
+                            case ISOSCELESTRIANGLE:
+                                currentShape = new IsoscelesTriangle(currentPoints.get(0), currentPoints.get(1), height, borderColor, fillingColor);
+                                break;
+                            case REGULARPOLYGON:
+                                currentShape = new RegularPolygon(currentPoints.get(0), currentPoints.get(1), numberOfSides, borderColor, fillingColor);
+                                break;
+                            default:
+                                break;
                         }
-                        break;
-                    case RAY:
-                        Methods.drawPoint(panel, currentPoints, mouseEvent);
-                        if (currentPoints.size() == 2) {
-                           Ray ray = new Ray(currentPoints.get(0), currentPoints.get(1), borderColor);
-                            listOfShape.add(ray);
-                            info.addElement("Ray");
-                            panel.repaint();
-                            currentType = TypeOfShape.NONE;
+                        addShape();
+                    }
+                    if(currentPoints.size() == 3) {
+                        switch (currentType) {
+                            case ELLIPSE:
+                                currentShape = new Ellipse(currentPoints.get(0), currentPoints.get(1), currentPoints.get(2), borderColor, fillingColor);
+                                break;
+                            case TRIANGLE:
+                                currentShape = new Triangle(currentPoints.get(0), currentPoints.get(1), currentPoints.get(2), borderColor, fillingColor);
+                                break;
+                            case PARALLELOGRAM:
+                                currentShape = new Parallelogram(currentPoints.get(0), currentPoints.get(1), currentPoints.get(2), borderColor, fillingColor);
+                                break;
+                            default:
+                                break;
                         }
-                        break;
-                    case LINE:
-                        Methods.drawPoint(panel, currentPoints, mouseEvent);
-                        if (currentPoints.size() == 2) {
-                            Line line = new Line(currentPoints.get(0), currentPoints.get(1), borderColor);
-                            listOfShape.add(line);
-                            info.addElement("Line");
-                            panel.repaint();
-                            currentType = TypeOfShape.NONE;
-                        }
-                        break;
-                    case ELLIPSE:
-                        Methods.drawPoint(panel, currentPoints, mouseEvent);
-                        if (currentPoints.size() == 3) {
-                            Ellipse ellipse = new Ellipse(currentPoints.get(0), currentPoints.get(1), currentPoints.get(2));
-                            ellipse.setBorderColor(borderColor);
-                            ellipse.setfillingColor(fillingColor);
-                            listOfShape.add(ellipse);
-                            info.addElement("Ellipse");
-                            panel.repaint();
-                            currentType = TypeOfShape.NONE;
-                        }
-                        break;
-                    case CIRCLE:
-                        Methods.drawPoint(panel, currentPoints, mouseEvent);
-                        if (currentPoints.size() == 2) {
-                            Circle circle = new Circle(currentPoints.get(0), currentPoints.get(1));
-                            circle.setBorderColor(borderColor);
-                            circle.setfillingColor(fillingColor);
-                            listOfShape.add(circle);
-                            info.addElement("Circle");
-                            panel.repaint();
-                            currentType = TypeOfShape.NONE;
-                        }
-                        break;
-                    case POLYGON:
-                    case POLYLINE:
-                        Methods.drawPoint(panel, currentPoints, mouseEvent);
-                        break;
-                    case REGULARPOLYGON:
-                        Methods.drawPoint(panel, currentPoints, mouseEvent);
-                        if(currentPoints.size() == 2) {
-                            RegularPolygon regularPolygon = new RegularPolygon(currentPoints.get(0), currentPoints.get(1), numberOfSides);
-                            regularPolygon.setBorderColor(borderColor);
-                            regularPolygon.setfillingColor(fillingColor);
-                            listOfShape.add(regularPolygon);
-                            info.addElement("Regular Polygon");
-                            panel.repaint();
-                            currentType = TypeOfShape.NONE;
-                            numberOfSides = 0;
-                        }
-                        break;
-                    case TRIANGLE:
-                        Methods.drawPoint(panel, currentPoints, mouseEvent);
-                        if(currentPoints.size() == 3) {
-                            Triangle triangle = new Triangle(currentPoints.get(0), currentPoints.get(1), currentPoints.get(2));
-                            triangle.setBorderColor(borderColor);
-                            triangle.setfillingColor(fillingColor);
-                            listOfShape.add(triangle);
-                            info.addElement("Triangle");
-                            panel.repaint();
-                            currentType = TypeOfShape.NONE;
-                        }
-                        break;
-                    case ISOSCELESTRIANGLE:
-                        Methods.drawPoint(panel, currentPoints, mouseEvent);
-                        if(currentPoints.size() == 2) {
-                            IsoscelesTriangle isoscelesTriangle = new IsoscelesTriangle(currentPoints.get(0),currentPoints.get(1), height);
-                            isoscelesTriangle.setBorderColor(borderColor);
-                            isoscelesTriangle.setfillingColor(fillingColor);
-                            listOfShape.add(isoscelesTriangle);
-                            info.addElement("Isosceles Triangle");
-                            panel.repaint();
-                            currentType = TypeOfShape.NONE;
-                        }
-                        break;
-                    case PARALLELOGRAM:
-                        Methods.drawPoint(panel, currentPoints, mouseEvent);
-                        if(currentPoints.size() == 3) {
-                            Parallelogram parallelogram = new Parallelogram(currentPoints.get(0), currentPoints.get(1), currentPoints.get(2));
-                            parallelogram.setBorderColor(borderColor);
-                            parallelogram.setfillingColor(fillingColor);
-                            listOfShape.add(parallelogram);
-                            info.addElement("Parallelogram");
-                            panel.repaint();
-                            currentType = TypeOfShape.NONE;
-                        }
-                        break;
-                    case RECTANGLE:
-                        Methods.drawPoint(panel, currentPoints, mouseEvent);
-                        if(currentPoints.size() == 2) {
-                            Rectangle rectangle = new Rectangle(currentPoints.get(0), currentPoints.get(1));
-                            rectangle.setBorderColor(borderColor);
-                            rectangle.setfillingColor(fillingColor);
-                            listOfShape.add(rectangle);
-                            info.addElement("Rectangle");
-                            panel.repaint();
-                            currentType = TypeOfShape.NONE;
-                        }
-                        break;
-                    default:
-                        break;
+                        addShape();
+                    }
                 }
             }
+
 
             @Override
             public void mouseReleased(MouseEvent mouseEvent) {
@@ -433,6 +286,13 @@ public class App {
             }
         });
 
+    }
+    void addShape() {
+        info.addElement(currentShape.getClass().getSimpleName());
+        listOfShape.add(currentShape);
+        panel.repaint();
+        currentType = TypeOfShape.NONE;
+        currentPoints.clear();
     }
 
 }

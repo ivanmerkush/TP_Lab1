@@ -1,5 +1,7 @@
 package Shapes;
 
+import java.awt.*;
+
 /**
  * @author ����������
  * @version 1.0
@@ -8,7 +10,7 @@ package Shapes;
 public class Circle extends Ellipse {
 
 
-	public Circle(Point center, Point majorPoint) {
+	public Circle(Point center, Point majorPoint, Color borderColor, Color fillingColor) {
 		this.center = center;
 		this.majorPoint = majorPoint;
 		double horizontal = center.getX() > majorPoint.getX() ? Math.pow(center.getX() - majorPoint.getX(), 2) : Math.pow(majorPoint.getX() - center.getX(), 2);
@@ -16,6 +18,8 @@ public class Circle extends Ellipse {
 		double length = Math.sqrt(horizontal + vertical);
 		this.minorPoint = new Point(center.getX(), center.getY() - (int) length);
 		this.majorPoint = new Point(center.getX() - (int)length, center.getY());
+		this.borderColor = borderColor;
+		this.fillingColor = fillingColor;
 	}
 
 

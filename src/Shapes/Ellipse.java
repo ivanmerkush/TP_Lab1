@@ -19,10 +19,12 @@ public class Ellipse extends Shape2D {
 
 	}
 
-	public Ellipse(Point center, Point majorPoint, Point minorPoint) {
+	public Ellipse(Point center, Point majorPoint, Point minorPoint, Color borderColor, Color fillingColor) {
 		this.center = center;
 		this.majorPoint = majorPoint;
 		this.minorPoint = minorPoint;
+		this.borderColor = borderColor;
+		this.fillingColor = fillingColor;
 	}
 
 	public void draw(Graphics2D g){

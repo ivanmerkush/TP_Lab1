@@ -16,8 +16,10 @@ public class Polygon extends Shape2D {
 
 	}
 
-	public Polygon(ArrayList<Point> points){
+	public Polygon(ArrayList<Point> points, Color borderColor, Color fillingColor){
 		this.points = new ArrayList<>(points);
+		this.borderColor = borderColor;
+		this.fillingColor = fillingColor;
 	}
 
 	public void draw(Graphics2D g){

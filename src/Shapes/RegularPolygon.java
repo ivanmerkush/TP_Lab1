@@ -1,5 +1,6 @@
 package Shapes;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -9,7 +10,7 @@ import java.util.ArrayList;
  */
 public class RegularPolygon extends Polygon {
 
-	public RegularPolygon(Point center, Point borderPoint, int numberOfSides){
+	public RegularPolygon(Point center, Point borderPoint, int numberOfSides, Color borderColor, Color fillingColor){
 		points = new ArrayList<>();
 		double horizontal = center.getX() > borderPoint.getX() ? center.getX() - borderPoint.getX() : borderPoint.getX() - center.getX();
 		double vertical = center.getY() > borderPoint.getY() ? center.getY() - borderPoint.getY() : borderPoint.getY() - center.getY();
@@ -23,7 +24,8 @@ public class RegularPolygon extends Polygon {
 					center.getY() < borderPoint.getY() ? center.getY() + (int) (b * radius) : center.getY() - (int) (b * radius)));
 			z += angle;
 		}
-
+        this.borderColor = borderColor;
+		this.fillingColor = fillingColor;
 	}
 
 
